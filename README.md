@@ -26,6 +26,7 @@ As mentioned before, there are three files in this repository.
 Okay not a poem, but a few words nonetheless for this beautiful creation. Well as I said it uses psycopg2. And I use the **bleach** library to clean my inputs so that people who have dirty minds *(compared with mine for reference)* don't screw up my database.
 
 Here's how each function works:
+
 1. It connects to the database
 2. I declare a `query` string which will be run on the database. This is an SQL query.
 3. I run the query using `c.execute()`. Sometimes in insert operations I also do a `db.commit` otherwise the query doesn't reflect in the database.
