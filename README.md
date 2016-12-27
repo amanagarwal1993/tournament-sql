@@ -37,5 +37,5 @@ Ta-daaa!!!!
 ### License
 [GNU General Public License](http://choosealicense.com/licenses/gpl-3.0/#)
 
-But hey - do yourself a favor and copy anything from my project for your own if you take up the Full Stack Nanodegree program at Udacity. Except for plagiarism, use this freely with attribution. :)
+But hey - do yourself a favor and DO NOT copy anything from my project for your own if you take up the Full Stack Nanodegree program at Udacity. Except for plagiarism, use this freely with attribution. :)
 
