@@ -23,7 +23,7 @@ As mentioned before, there are three files in this repository.
 3. **Tournament_test.py**: This is a file provided by Udacity that runs automatic tests on your *Tournament.py* functions to see if they're working fine. No need to tinker with the functions there, but feel free to add your own if you feel 'hacky'. Like, in a hacking mood? Not sure if this word exists and/or is used in the way I just did...
 
 ### A poem about the tournament.py file
-Okay not a poem, but a few words nonetheless for this beautiful creation. Well as I said it uses psycopg2. And I use the **bleach** library to clean my inputs so that people who have dirty minds *(compared with mine for reference)* don't screw up my database.
+Okay not a poem, but a few words nonetheless for this beautiful creation. Well as I said it uses psycopg2. And I use the **bleach** library to sanitize my inputs so that people who have dirty minds *(compared with mine for reference)* don't screw up my database.
 
 Here's how each function works:
 
