@@ -1,15 +1,18 @@
 #!/usr/bin/env python
-# 
+#
 # tournament.py -- implementation of a Swiss-system tournament
 #
 import psycopg2
-import bleach # To clean inputs
+import bleach  # To clean inputs
 
 
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
-
+    try:
+        db = psycopg2.connect("dbname=tournament")
+        return db
+    except:
+        print ("I, your computer, refuse to obey you from now on.")
 
 def deleteMatches():
     """Remove all the match records from the database."""
@@ -20,6 +23,7 @@ def deleteMatches():
     db.commit()
     db.close()
 
+
 def deletePlayers():
     """Remove all the player records from the database."""
     db = connect()
@@ -28,6 +32,7 @@ def deletePlayers():
     c.execute(query)
     db.commit()
     db.close()
+
 
 def countPlayers():
     """Returns the number of players currently registered."""
@@ -39,20 +44,22 @@ def countPlayers():
     db.close()
     return total
 
+
 def registerPlayer(name):
     """Adds a player to the tournament database.
-  
+
     The database assigns a unique serial id number for the player.  (This
     should be handled by your SQL database schema, not in your Python code.)
     hurray
-  
+
     Args:
       name: the player's full name (need not be unique).
     """
     db = connect()
     c = db.cursor()
-    query = "insert into players(name) values ('%s');" % bleach.clean(name)
-    c.execute(query)
+    query = "insert into players(name) values (%s);"
+    data = (bleach.clean(name),)
+    c.execute(query, data)
     db.commit()
     db.close()
 
@@ -60,8 +67,8 @@ def registerPlayer(name):
 def playerStandings():
     """Returns a list of the players and their win records, sorted by wins.
 
-    The first entry in the list should be the player in first place, or a player
-    tied for first place if there is currently a tie.
+    The first entry in the list should be the player in first place,
+    or a player tied for first place if there is currently a tie.
 
     Returns:
       A list of tuples, each of which contains (id, name, wins, matches):
@@ -88,20 +95,21 @@ def reportMatch(winner, loser):
     """
     db = connect()
     c = db.cursor()
-    query = "insert into matches(winner, loser) values(%d,%d);" % (winner, loser)
-    c.execute(query)
+    query = "insert into matches(winner, loser) values(%s,%s);"
+    data = (winner, loser,)
+    c.execute(query, data)
     db.commit()
     db.close()
- 
- 
+
+
 def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
-  
+
     Assuming that there are an even number of players registered, each player
     appears exactly once in the pairings.  Each player is paired with another
     player with an equal or nearly-equal win record, that is, a player adjacent
     to him or her in the standings.
-  
+
     Returns:
       A list of tuples, each of which contains (id1, name1, id2, name2)
         id1: the first player's unique id
@@ -111,8 +119,8 @@ def swissPairings():
     """
     db = connect()
     c = db.cursor()
-    query1 = '''create temp table rankings as select id, name, wins, 
-    row_number() over (order by wins desc) as rank 
+    query1 = '''create temp table rankings as select id, name, wins,
+    row_number() over (order by wins desc) as rank
     from player_standings;'''
     c.execute(query1)
     query2 = '''select a.id, a.name, b.id, b.name
@@ -122,3 +130,4 @@ def swissPairings():
     pairings = c.fetchall()
     db.close()
     return pairings
+
